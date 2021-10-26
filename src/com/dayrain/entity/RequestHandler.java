@@ -45,7 +45,6 @@ public class RequestHandler implements HttpHandler {
     }
 
     private void response(HttpExchange exchange, String jsonBody) {
-        setHeaders(exchange);
         try {
             exchange.sendResponseHeaders(200, jsonBody.length());
             exchange.setAttribute("Content-Type","application/json; charset=utf-8");
@@ -55,34 +54,5 @@ public class RequestHandler implements HttpHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void setHeaders(HttpExchange exchange) {
-        Map<String, String> headerMap = serverUrl.getHeaderMap();
-        if(headerMap != null && headerMap.size() > 0) {
-            Headers responseHeaders = exchange.getResponseHeaders();
-            for (String header : headerMap.keySet()) {
-                responseHeaders.add(header, headerMap.get(header));
-            }
-        }
-    }
-
-    public static Map<String,String> formData2Dic(String formData ) {
-        Map<String,String> result = new HashMap<>();
-        if(formData== null || formData.trim().length() == 0) {
-            return result;
-        }
-        final String[] items = formData.split("&");
-        Arrays.stream(items).forEach(item ->{
-            final String[] keyAndVal = item.split("=");
-            if( keyAndVal.length == 2) {
-                try{
-                    final String key = URLDecoder.decode( keyAndVal[0],"utf8");
-                    final String val = URLDecoder.decode( keyAndVal[1],"utf8");
-                    result.put(key,val);
-                }catch (UnsupportedEncodingException ignored) {}
-            }
-        });
-        return result;
     }
 }
