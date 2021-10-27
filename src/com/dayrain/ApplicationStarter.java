@@ -2,30 +2,20 @@ package com.dayrain;
 
 import com.dayrain.entity.Configuration;
 import com.dayrain.entity.RequestType;
-import com.dayrain.entity.Server;
 import com.dayrain.entity.ServerConfig;
 import com.dayrain.entity.ServerUrl;
+import com.dayrain.utils.FileUtils;
 import com.dayrain.views.HomePage;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TitledPane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class ApplicationStarter extends Application {
-    Configuration configuration = configInit();
+
     public static void main(String[] args) {
-
-
-//        List<ServerConfig> serverConfigs = configuration.getServerConfigs();
-//        for (ServerConfig serverConfig : serverConfigs) {
-//            Server server = new Server(serverConfig);
-//            Thread thread = new Thread(server);
-//            thread.start();
-//        }
         launch(args);
     }
 
@@ -40,7 +30,7 @@ public class ApplicationStarter extends Application {
                                 "    \"password\": \"123\"\n" +
                                 "}"));
 
-                        add(new ServerUrl("登录", "/logout", RequestType.GET, "{\n" +
+                        add(new ServerUrl("登出", "/logout", RequestType.GET, "{\n" +
                                 "    \"username\": \"admin\",\n" +
                                 "    \"password\": \"123\"\n" +
                                 "}"));
@@ -56,6 +46,6 @@ public class ApplicationStarter extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        new HomePage(primaryStage, configuration).start();
+        new HomePage(primaryStage).start();
     }
 }

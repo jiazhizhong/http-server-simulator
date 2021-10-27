@@ -1,0 +1,22 @@
+{
+  "projectName" : null,
+  "width" : 1200,
+  "height" : 800,
+  "serverConfigs" : [ {
+    "serverName" : "测试接口",
+    "port" : 8080,
+    "serverUrls" : [ {
+      "urlName" : "登出",
+      "url" : "/logout",
+      "requestType" : "GET",
+      "responseBody" : "{\n    \"username\": \"admin\",\n    \"password\": \"123\"\n}",
+      "headerMap" : null
+    }, {
+      "urlName" : "查询1",
+      "url" : "/list1",
+      "requestType" : null,
+      "responseBody" : "{\n\t\"taskNo\":  \"123\"\n}",
+      "headerMap" : null
+    } ]
+  } ]
+}

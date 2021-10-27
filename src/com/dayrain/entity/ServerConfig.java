@@ -16,6 +16,9 @@ public class ServerConfig {
      */
     private List<ServerUrl>serverUrls;
 
+    public ServerConfig() {
+    }
+
     public ServerConfig(String serverName, int port, List<ServerUrl>serverUrls) {
         this.serverName = serverName;
         this.port = port;

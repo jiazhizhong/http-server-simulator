@@ -26,11 +26,14 @@ public class ServerUrl {
      */
     private Map<String, String> headerMap;
 
-    public ServerUrl(String urlName, String url, RequestType requestType, String requestBody) {
+    public ServerUrl() {
+    }
+
+    public ServerUrl(String urlName, String url, RequestType requestType, String responseBody) {
         this.urlName = urlName;
         this.url = url;
         this.requestType = requestType;
-        this.responseBody = requestBody;
+        this.responseBody = responseBody;
     }
 
     public String getUrlName() {
