@@ -1,4 +1,4 @@
-package com.dayrain.entity;
+package com.dayrain.component;
 
 import com.dayrain.utils.FileUtils;
 
@@ -14,5 +14,9 @@ public class ConfigHolder {
 
     public static void save() {
         FileUtils.saveConfig(configuration);
+    }
+
+    public static Configuration get() {
+        return configuration;
     }
 }

@@ -1,4 +1,4 @@
-package com.dayrain.entity;
+package com.dayrain.component;
 
 public enum RequestType {
     GET,POST;

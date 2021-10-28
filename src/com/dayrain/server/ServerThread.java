@@ -1,7 +1,7 @@
 package com.dayrain.server;
 
-import com.dayrain.entity.Server;
-import com.dayrain.entity.ServerUrl;
+import com.dayrain.component.Server;
+import com.dayrain.component.ServerUrl;
 
 public class ServerThread extends Thread {
     private final Server server;

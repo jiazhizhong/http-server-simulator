@@ -1,20 +1,28 @@
 package com.dayrain.views;
 
-import com.dayrain.entity.ConfigHolder;
-import com.dayrain.entity.Configuration;
-import com.dayrain.entity.Server;
-import com.dayrain.entity.ServerConfig;
-import com.dayrain.entity.ServerUrl;
+import com.dayrain.handle.UpdateRandomLenHandler;
+import com.dayrain.style.ButtonFactory;
+import com.dayrain.component.ConfigHolder;
+import com.dayrain.component.Configuration;
+import com.dayrain.component.ConsoleLog;
+import com.dayrain.component.LogArea;
+import com.dayrain.component.ServerConfig;
+import com.dayrain.component.ServerUrl;
+import com.dayrain.handle.AddServerHandler;
 import com.dayrain.handle.AddUrlHandler;
+import com.dayrain.handle.DeleteServerHandler;
 import com.dayrain.handle.DeleteUrlHandler;
+import com.dayrain.handle.ExportConfigHandler;
+import com.dayrain.handle.ImportConfigHandler;
 import com.dayrain.handle.StartServerHandler;
 import com.dayrain.handle.UpdateServerConfigHandler;
 import com.dayrain.handle.UpdateUrlHandler;
 import com.dayrain.server.ServerThread;
+import com.dayrain.style.LabelFactory;
 import com.dayrain.utils.FileUtils;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -26,19 +34,23 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,11 +59,15 @@ public class HomePage {
 
     private Stage primaryStage;
 
-    private final Configuration configuration = ConfigHolder.init();
+    private Configuration configuration = ConfigHolder.init();
 
     private HashMap<String, ServerThread> threadMap = new HashMap<>();
 
     private List<ListView<ServerUrl>> listViews = new ArrayList<>();
+
+    private VBox serverContainer;
+
+    private LogArea logArea;
 
     public HomePage(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -68,48 +84,62 @@ public class HomePage {
         MenuItem menuItem2 = new MenuItem("导入");
         MenuItem menuItem3 = new MenuItem("导出");
         menu1.getItems().addAll(menuItem1, menuItem2, menuItem3);
-
-        Menu menu2 = new Menu("日志");
+        Menu menu2 = new Menu("设置");
+        MenuItem menuItem21 = new MenuItem("随机值长度");
+        menu2.getItems().add(menuItem21);
         Menu menu3 = new Menu("帮助");
-        menuBar.getMenus().addAll(menu1, menu2,  menu3);
+        menuBar.getMenus().addAll(menu1, menu2, menu3);
         borderPane.setTop(menuBar);
 
         //渲染服务列表
-        VBox serverContainer = new VBox();
+        this.serverContainer = new VBox();
+        refreshServerContainer();
 
-        List<ServerConfig> serverConfigs = configuration.getServerConfigs();
-
-        for (ServerConfig serverConfig : serverConfigs) {
-            drawServerPanel(serverContainer, serverConfig, primaryStage);
-        }
-
+        menuItem1.setOnAction(new AddServerHandler(primaryStage, configuration, this));
+        menuItem2.setOnAction(new ImportConfigHandler(primaryStage, this));
+        menuItem3.setOnAction(new ExportConfigHandler(primaryStage, configuration));
+        menuItem21.setOnAction(new UpdateRandomLenHandler(primaryStage));
         borderPane.setLeft(serverContainer);
-        primaryStage.setScene(new Scene(borderPane));
+
+        //日志
+        logArea = new LogArea();
+        logArea.setEditable(false);
+        logArea.setFont(Font.font("Microsoft YaHei", 20));
+        logArea.setPrefWidth(582);
+        logArea.setPrefHeight(600);
+
+        ConsoleLog.setTextArea(logArea);
+
+        borderPane.setRight(logArea);
+
+        menuBar.setBackground(getBackGround());
+
+        Scene scene = new Scene(borderPane);
+        primaryStage.setTitle(configuration.getProjectName());
+        primaryStage.setScene(scene);
         primaryStage.setWidth(configuration.getWidth());
         primaryStage.setHeight(configuration.getHeight());
+        primaryStage.getIcons().add(getIcon());
         primaryStage.show();
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                FileUtils.saveConfig(configuration);
-            }
-        });
+        primaryStage.setOnCloseRequest(event -> FileUtils.saveConfig(configuration));
     }
 
     public void drawServerPanel(VBox serverContainer, ServerConfig serverConfig, Stage primaryStage) {
 
         VBox vBox = new VBox();
         HBox headBox = new HBox();
-        Button editButton = new Button("配置参数");
-        Button openButton = new Button("开启服务");
-        Button addButton = new Button("添加接口");
+        Button editButton = ButtonFactory.getButton("修改配置");
+        Button openButton = ButtonFactory.getButton("开启服务");
+        Button deleteButton = ButtonFactory.getButton("删除服务");
+        Button addButton = ButtonFactory.getButton("添加接口");
         Circle statusCircle = new Circle();
         statusCircle.setRadius(10);
         statusCircle.setFill(Color.RED);
         //设置服务启动与关闭
         openButton.setOnAction(new StartServerHandler(openButton, statusCircle, serverConfig, threadMap));
         editButton.setOnAction(new UpdateServerConfigHandler(serverConfig, primaryStage));
-        headBox.getChildren().addAll(openButton, editButton, addButton, statusCircle);
+        deleteButton.setOnAction(new DeleteServerHandler(serverConfig, configuration, this));
+        headBox.getChildren().addAll(openButton, editButton, deleteButton, addButton, statusCircle);
         HBox.setMargin(statusCircle, new Insets(0,0,0,30));
         headBox.setSpacing(20d);
         headBox.setAlignment(Pos.CENTER);
@@ -122,14 +152,30 @@ public class HomePage {
         VBox.setMargin(headBox, new Insets(10, 0, 0, 0));
         vBox.setPadding(Insets.EMPTY);
         TitledPane titledPane = new TitledPane(serverConfig.getServerName(), vBox);
+        titledPane.setFont(Font.font("Microsoft YaHei", 18));
         titledPane.setPrefWidth(600d);
+        titledPane.setExpanded(false);
+        titledPane.setBackground(getBackGround());
+        titledPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(!serverConfig.getServerName().equals(logArea.getServerName())) {
+                    ConsoleLog.resetTextArea(serverConfig.getServerName());
+                }
+            }
+        });
+
+        HBox hBox = new HBox();
+        hBox.setPrefHeight(60d);
+        titledPane.setGraphic(hBox);
+
         serverContainer.getChildren().add(titledPane);
     }
 
     public ListView<ServerUrl> drawUrlPanel(List<ServerUrl> serverUrls, ServerConfig serverConfig) {
         ObservableList<ServerUrl> urlList = FXCollections.observableArrayList(serverUrls);
         ListView<ServerUrl> serverListViews = new ListView<>(urlList);
-        listViews.add(serverListViews);
+
         serverListViews.setCellFactory(new Callback<ListView<ServerUrl>, ListCell<ServerUrl>>() {
             @Override
             public ListCell<ServerUrl> call(ListView<ServerUrl> param) {
@@ -145,24 +191,26 @@ public class HomePage {
                             BorderPane urlPane = new BorderPane();
 
                             HBox labelBox = new HBox();
-                            Label nameLabel = new Label(item.getUrlName());
+                            Label nameLabel = LabelFactory.getLabel(item.getUrlName());
                             nameLabel.setPrefWidth(100d);
-                            Label urlLabel = new Label(item.getUrl());
+                            Label urlLabel = LabelFactory.getLabel(item.getUrl());
                             labelBox.getChildren().addAll(nameLabel, urlLabel);
                             labelBox.setAlignment(Pos.CENTER_LEFT);
 
                             HBox btnBox = new HBox();
-                            Button configButton = new Button("配置");
-                            Button deleteButton = new Button("删除");
+                            Button configButton = ButtonFactory.getButton("配置");
+                            Button deleteButton = ButtonFactory.getButton("删除");
                             btnBox.setSpacing(15d);
                             btnBox.getChildren().addAll(configButton, deleteButton);
+                            HBox.setMargin(deleteButton, new Insets(0, 20,0,0));
 
-                            deleteButton.setOnAction(new DeleteUrlHandler(item, serverConfig, serverListViews, threadMap));
+                            deleteButton.setOnAction(new DeleteUrlHandler(item, serverConfig, serverListViews, HomePage.this));
                             configButton.setOnAction(new UpdateUrlHandler(item, serverListViews, primaryStage));
 
                             urlPane.setLeft(labelBox);
                             urlPane.setRight(btnBox);
                             this.setGraphic(urlPane);
+
                         }
                     }
                 };
@@ -170,7 +218,52 @@ public class HomePage {
             }
         });
 
+        serverListViews.prefHeightProperty().bind(Bindings.size(urlList).multiply(60));
+        serverListViews.setFocusTraversable(false);
+
         return serverListViews;
     }
 
+    public void refreshServerContainer() {
+        serverContainer.getChildren().removeAll(serverContainer.getChildren());
+        List<ServerConfig> serverConfigs = configuration.getServerConfigs();
+        if(serverConfigs == null || serverConfigs.size() == 0) {
+            serverConfigs = new ArrayList<>();
+            configuration.setServerConfigs(serverConfigs);
+        }
+
+        for (ServerConfig serverConfig : serverConfigs) {
+            drawServerPanel(serverContainer, serverConfig, primaryStage);
+        }
+    }
+
+    public void restart() {
+        cleanUp();
+        start();
+    }
+
+    public void cleanUp() {
+        for (String name : threadMap.keySet()) {
+            threadMap.get(name).stopServer();
+        }
+    }
+
+    public void replaceConfig(Configuration configuration) {
+        this.configuration = configuration;
+    }
+
+    public Image getIcon() {
+        try {
+            return new Image(new FileInputStream(FileUtils.getResourcePath("panda.png")));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Background getBackGround() {
+        BackgroundFill backgroundFill = new BackgroundFill(Color.GRAY, new CornerRadii(1),
+                new Insets(0.0,0.0,0.0,0.0));
+        return new Background(backgroundFill);
+    }
 }

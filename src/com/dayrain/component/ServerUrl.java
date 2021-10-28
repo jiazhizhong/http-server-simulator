@@ -1,6 +1,5 @@
-package com.dayrain.entity;
+package com.dayrain.component;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class ServerUrl {
@@ -13,6 +12,10 @@ public class ServerUrl {
      * 路径url
      */
     private String url;
+    /**
+     * 服务名称
+     */
+    private String serverName;
     /**
      * 请求类型
      */
@@ -29,7 +32,8 @@ public class ServerUrl {
     public ServerUrl() {
     }
 
-    public ServerUrl(String urlName, String url, RequestType requestType, String responseBody) {
+    public ServerUrl(String serverName, String urlName, String url, RequestType requestType, String responseBody) {
+        this.serverName = serverName;
         this.urlName = urlName;
         this.url = url;
         this.requestType = requestType;
@@ -74,5 +78,13 @@ public class ServerUrl {
 
     public void setResponseBody(String responseBody) {
         this.responseBody = responseBody;
+    }
+
+    public String getServerName() {
+        return serverName;
+    }
+
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
     }
 }

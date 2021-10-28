@@ -1,6 +1,6 @@
 package com.dayrain.utils;
 
-import com.dayrain.entity.ServerUrl;
+import com.dayrain.component.ServerUrl;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 

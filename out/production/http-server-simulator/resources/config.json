@@ -1,22 +1,37 @@
 {
-  "projectName" : null,
+  "projectName" : "HTTP SERVER 模拟器",
   "width" : 1200,
   "height" : 800,
+  "stringLen" : 8,
+  "intLen" : 8,
   "serverConfigs" : [ {
-    "serverName" : "测试接口",
-    "port" : 8080,
+    "serverName" : "WMS",
+    "port" : 8082,
     "serverUrls" : [ {
-      "urlName" : "登出",
-      "url" : "/logout",
-      "requestType" : "GET",
-      "responseBody" : "{\n    \"username\": \"admin\",\n    \"password\": \"123\"\n}",
+      "urlName" : "登录",
+      "url" : "/login",
+      "serverName" : "WMS",
+      "requestType" : "POST",
+      "responseBody" : "{\n\t\"success\": \"$int$\"\n}",
       "headerMap" : null
     }, {
-      "urlName" : "查询1",
-      "url" : "/list1",
-      "requestType" : null,
-      "responseBody" : "{\n\t\"taskNo\":  \"123\"\n}",
+      "urlName" : "退出",
+      "url" : "/logout",
+      "serverName" : "WMS",
+      "requestType" : "POST",
+      "responseBody" : "{\n\t\"id\": 1\n}",
+      "headerMap" : null
+    }, {
+      "urlName" : "登录2",
+      "url" : "/login22",
+      "serverName" : "WMS",
+      "requestType" : "POST",
+      "responseBody" : "",
       "headerMap" : null
     } ]
+  }, {
+    "serverName" : "WCS",
+    "port" : 8083,
+    "serverUrls" : [ ]
   } ]
 }

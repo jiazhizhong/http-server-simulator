@@ -1,7 +1,7 @@
 package com.dayrain.handle;
 
-import com.dayrain.entity.Server;
-import com.dayrain.entity.ServerConfig;
+import com.dayrain.component.Server;
+import com.dayrain.component.ServerConfig;
 import com.dayrain.server.ServerThread;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

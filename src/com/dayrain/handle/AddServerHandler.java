@@ -1,9 +1,11 @@
 package com.dayrain.handle;
 
 import com.dayrain.component.ConfigHolder;
+import com.dayrain.component.Configuration;
 import com.dayrain.component.ServerConfig;
 import com.dayrain.style.ButtonFactory;
 import com.dayrain.style.LabelFactory;
+import com.dayrain.views.HomePage;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -16,40 +18,47 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class UpdateServerConfigHandler implements EventHandler<ActionEvent> {
+import java.util.ArrayList;
 
-    private final ServerConfig serverConfig;
+/**
+ * 添加server
+ * @author peng
+ * @date 2021/10/28
+ */
+public class AddServerHandler implements EventHandler<ActionEvent> {
 
     private final Stage primaryStage;
 
-    public UpdateServerConfigHandler(ServerConfig serverConfig, Stage primaryStage) {
-        this.serverConfig = serverConfig;
+    private final Configuration configuration;
+
+    private final HomePage homePage;
+
+    public AddServerHandler(Stage primaryStage, Configuration configuration, HomePage homePage) {
         this.primaryStage = primaryStage;
+        this.configuration = configuration;
+        this.homePage = homePage;
     }
 
     @Override
     public void handle(ActionEvent event) {
         Stage stage = new Stage();
-        Label serverName = LabelFactory.getLabel("服务名称:");
-        serverName.setPrefWidth(80);
-        TextField nameField = new TextField(serverConfig.getServerName());
-        Label portLabel = LabelFactory.getLabel("端口:");
-        TextField portField = new TextField(String.valueOf(serverConfig.getPort()));
+        Label nameLabel = LabelFactory.getLabel("服务名称:");
+        nameLabel.setPrefWidth(80);
+        TextField nameField = new TextField();
+        Label portLabel = LabelFactory.getLabel("端口号:");
+        TextField portField = new TextField();
         portField.setPrefWidth(80);
 
         HBox btnHBox = new HBox();
-        Label saveTips = LabelFactory.getLabel("重启后生效");
         Button saveButton = ButtonFactory.getButton("保存");
-        btnHBox.getChildren().addAll(saveTips, saveButton);
+        btnHBox.getChildren().add(saveButton);
         btnHBox.setAlignment(Pos.CENTER_RIGHT);
-        btnHBox.setSpacing(20d);
 
         GridPane gridPane = new GridPane();
-        gridPane.add(serverName, 0, 0);
+        gridPane.add(nameLabel, 0, 0);
         gridPane.add(nameField, 1, 0);
         gridPane.add(portLabel, 0, 1);
         gridPane.add(portField, 1, 1);
-
         gridPane.add(btnHBox, 1, 3);
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(20d);
@@ -67,9 +76,10 @@ public class UpdateServerConfigHandler implements EventHandler<ActionEvent> {
             @Override
             public void handle(ActionEvent event) {
                 String name = nameField.getText();
-                int port = Integer.parseInt(portField.getText());
-                serverConfig.setPort(port);
-                serverConfig.setServerName(name);
+                String port = portField.getText();
+                ServerConfig serverConfig = new ServerConfig(name, Integer.parseInt(port), new ArrayList<>());
+                configuration.getServerConfigs().add(serverConfig);
+                homePage.refreshServerContainer();
                 ConfigHolder.save();
                 stage.close();
             }

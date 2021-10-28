@@ -1,4 +1,4 @@
-package com.dayrain.entity;
+package com.dayrain.component;
 
 import com.sun.net.httpserver.HttpServer;
 
