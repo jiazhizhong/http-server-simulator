@@ -73,4 +73,16 @@ public class Configuration {
     public void setIntLen(int intLen) {
         this.intLen = intLen;
     }
+
+    @Override
+    public String toString() {
+        return "Configuration{" +
+                "projectName='" + projectName + '\'' +
+                ", width=" + width +
+                ", height=" + height +
+                ", stringLen=" + stringLen +
+                ", intLen=" + intLen +
+                ", serverConfigs=" + serverConfigs +
+                '}';
+    }
 }

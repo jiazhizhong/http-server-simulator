@@ -1,5 +1,6 @@
 package com.dayrain.handle;
 
+import com.dayrain.component.ConfigHolder;
 import com.dayrain.component.Configuration;
 import com.dayrain.utils.FileUtils;
 import com.dayrain.views.HomePage;
@@ -38,6 +39,7 @@ public class ImportConfigHandler implements EventHandler<ActionEvent> {
 
         if(file != null) {
             Configuration loadConfig = FileUtils.load(file);
+            ConfigHolder.replace(loadConfig);
             FileUtils.saveConfig(loadConfig);
             homePage.replaceConfig(loadConfig);
             homePage.restart();

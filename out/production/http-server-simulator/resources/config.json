@@ -2,8 +2,6 @@
   "projectName" : "HTTP SERVER 模拟器",
   "width" : 1200,
   "height" : 800,
-  "stringLen" : 8,
-  "intLen" : 8,
   "serverConfigs" : [ {
     "serverName" : "WMS",
     "port" : 8082,
@@ -12,21 +10,7 @@
       "url" : "/login",
       "serverName" : "WMS",
       "requestType" : "POST",
-      "responseBody" : "{\n\t\"success\": \"$int$\"\n}",
-      "headerMap" : null
-    }, {
-      "urlName" : "退出",
-      "url" : "/logout",
-      "serverName" : "WMS",
-      "requestType" : "POST",
-      "responseBody" : "{\n\t\"id\": 1\n}",
-      "headerMap" : null
-    }, {
-      "urlName" : "登录2",
-      "url" : "/login22",
-      "serverName" : "WMS",
-      "requestType" : "POST",
-      "responseBody" : "",
+      "responseBody" : "{\n\t\"success\": \"ok\"\n}",
       "headerMap" : null
     } ]
   }, {

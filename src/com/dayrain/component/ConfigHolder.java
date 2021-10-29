@@ -1,6 +1,9 @@
 package com.dayrain.component;
 
 import com.dayrain.utils.FileUtils;
+import com.fasterxml.jackson.databind.util.BeanUtil;
+
+import java.awt.*;
 
 public class ConfigHolder {
     private static Configuration configuration;
@@ -18,5 +21,9 @@ public class ConfigHolder {
 
     public static Configuration get() {
         return configuration;
+    }
+
+    public static void replace(Configuration config) {
+        configuration = config;
     }
 }

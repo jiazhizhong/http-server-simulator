@@ -1,36 +1,44 @@
 package com.dayrain.utils;
 
+import com.dayrain.ApplicationStarter;
 import com.dayrain.component.Configuration;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 
 public class FileUtils{
 
-    private static String configPath = getResourcePath("config.json");
-
     public static void saveConfig(Configuration configuration){
-        saveConfig(configuration, new File(configPath));
+
+        saveConfig(configuration, getConfigFile());
     }
 
     public static void saveConfig(Configuration configuration, File file){
-        FileWriter fileWriter = null;
+
+        BufferedWriter bufferedWriter = null;
         try {
-            fileWriter = new FileWriter(file);
             String config = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(configuration);
-            fileWriter.write(config);
-            fileWriter.flush();
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8));
+            bufferedWriter.write(config);
+            bufferedWriter.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
             try {
-                if(fileWriter != null) {
-                    fileWriter.close();
+                if(bufferedWriter != null) {
+                    bufferedWriter.close();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -39,15 +47,16 @@ public class FileUtils{
     }
 
     public static Configuration load() {
-        return load(new File(configPath));
+
+        return load(getConfigFile());
     }
 
     public static Configuration load(File file) {
         BufferedReader bufferedReader = null;
         try {
             StringBuilder configStr = new StringBuilder();
-            bufferedReader = new BufferedReader(new FileReader(file));
-            String buf = null;
+            bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8));
+            String buf;
             while ((buf = bufferedReader.readLine()) != null) {
                 configStr.append(buf);
             }
@@ -66,6 +75,7 @@ public class FileUtils{
         return null;
     }
 
+
     public static String getFromInputStream(InputStream inputStream) {
         try {
             byte[]buf = new byte[4096];
@@ -82,14 +92,27 @@ public class FileUtils{
         return null;
     }
 
-    public static String getResourcePath(String fileName) {
-        String file = Thread.currentThread().getContextClassLoader().getResource("resources/" + fileName).getFile();
-        return new File(file).toString();
+    private static File getConfigFile() {
+        String property = System.getProperty("user.dir");
+        File file = new File(property + File.separator + "config" + File.separator + "config.json");
+        if(!file.exists()) {
+
+            File dir = new File(property + File.separator + "config");
+            if(!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Configuration configuration = new Configuration(1200, 800, 8, 8);
+            saveConfig(configuration, file);
+        }
+        return file;
     }
 
-    public static String getResourcePathWithProtocol(String fileName) {
-        String file = Thread.currentThread().getContextClassLoader().getResource("resources/" + fileName).getFile();
-        return "file:" + File.separator + new File(file);
-    }
 
 }

@@ -47,10 +47,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -121,7 +121,7 @@ public class HomePage {
         primaryStage.setHeight(configuration.getHeight());
         primaryStage.getIcons().add(getIcon());
         primaryStage.show();
-        primaryStage.setOnCloseRequest(event -> FileUtils.saveConfig(configuration));
+        primaryStage.setOnCloseRequest(event -> ConfigHolder.save());
     }
 
     public void drawServerPanel(VBox serverContainer, ServerConfig serverConfig, Stage primaryStage) {
@@ -253,12 +253,7 @@ public class HomePage {
     }
 
     public Image getIcon() {
-        try {
-            return new Image(new FileInputStream(FileUtils.getResourcePath("panda.png")));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return new Image("resources/panda.png");
     }
 
     public Background getBackGround() {
