@@ -22,13 +22,10 @@ import com.dayrain.style.LabelFactory;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -37,7 +34,6 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -139,7 +135,15 @@ public class HomePage {
         primaryStage.setHeight(configuration.getHeight());
         primaryStage.getIcons().add(getIcon());
         primaryStage.show();
-        primaryStage.setOnCloseRequest(event -> ConfigHolder.save());
+        primaryStage.setOnCloseRequest(event -> {
+            ConfigHolder.save();
+            if(threadMap.size() > 0) {
+                for (String serverName : threadMap.keySet()) {
+                    ServerThread serverThread = threadMap.get(serverName);
+                    serverThread.stopServer();
+                }
+            }
+        });
     }
 
     public void drawServerPanel(VBox serverContainer, ServerConfig serverConfig, Stage primaryStage) {
