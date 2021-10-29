@@ -22,11 +22,13 @@ import com.dayrain.style.LabelFactory;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -48,6 +50,10 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -83,6 +89,23 @@ public class HomePage {
         MenuItem menuItem21 = new MenuItem("随机值长度");
         menu2.getItems().add(menuItem21);
         Menu menu3 = new Menu("帮助");
+        MenuItem menuItem31 = new MenuItem("说明书");
+        menuItem31.setOnAction(event -> {
+            try {
+                Desktop.getDesktop().browse(new URI("https://blog.csdn.net/qq_37855749/article/details/121030800"));
+            } catch (IOException | URISyntaxException e) {
+                e.printStackTrace();
+            }
+        });
+        MenuItem menuItem32 = new MenuItem("源码地址");
+        menuItem32.setOnAction(event -> {
+            try {
+                Desktop.getDesktop().browse(new URI("https://github.com/DayRain/http-server-simulator"));
+            } catch (IOException | URISyntaxException e) {
+                e.printStackTrace();
+            }
+        });
+        menu3.getItems().addAll(menuItem31, menuItem32);
         menuBar.getMenus().addAll(menu1, menu2, menu3);
         borderPane.setTop(menuBar);
 

@@ -1,23 +1,30 @@
 {
-  "projectName": "HTTP SERVER 模拟器",
-  "width": 1200,
-  "height": 800,
-  "stringLen": 0,
-  "intLen": 0,
-  "serverConfigs": [
-    {
-      "serverName": "WMS",
-      "port": 8082,
-      "serverUrls": [
-        {
-          "urlName": "登录",
-          "url": "/login",
-          "serverName": "WMS",
-          "requestType": "POST",
-          "responseBody": "{\n\t\"success\": \"ok\"\n}",
-          "headerMap": null
-        }
-      ]
-    }
-  ]
+  "projectName" : "HTTP SERVER 模拟器",
+  "width" : 1200,
+  "height" : 800,
+  "stringLen" : 8,
+  "intLen" : 8,
+  "serverConfigs" : [ {
+    "serverName" : "WMS",
+    "port" : 8080,
+    "serverUrls" : [ {
+      "urlName" : "登录",
+      "url" : "/login",
+      "serverName" : "WMS",
+      "requestType" : "POST",
+      "responseBody" : "{\n\t\"code\": 200,\n\t\"msg\": \"success\"\n}",
+      "headerMap" : null
+    }, {
+      "urlName" : "派发任务",
+      "url" : "/patch",
+      "serverName" : "WMS",
+      "requestType" : "POST",
+      "responseBody" : "{\n\t\"taskNo\": \"$string$\"\n}",
+      "headerMap" : null
+    } ]
+  }, {
+    "serverName" : "WCS",
+    "port" : 8081,
+    "serverUrls" : [ ]
+  } ]
 }

@@ -29,13 +29,15 @@ public class UpdateRandomLenHandler implements EventHandler<ActionEvent> {
         Configuration configuration = ConfigHolder.get();
         Stage stage = new Stage();
         Label strName = LabelFactory.getLabel("随机字符长度:");
-        strName.setPrefWidth(80);
+        strName.setPrefWidth(150);
         TextField strField = new TextField(String.valueOf(configuration.getStringLen()));
         Label intName = LabelFactory.getLabel("随机整数长度:");
         TextField intField = new TextField(String.valueOf(configuration.getIntLen()));
-        intField.setPrefWidth(80);
+        intField.setPrefWidth(150);
 
         HBox btnHBox = new HBox();
+        Label saveTips1 = LabelFactory.getLabel("注: $string$代指随机字符串");
+        Label saveTips2 = LabelFactory.getLabel("$int$代指随机整数");
         Button saveButton = ButtonFactory.getButton("保存");
         btnHBox.getChildren().addAll(saveButton);
         btnHBox.setAlignment(Pos.CENTER_RIGHT);
@@ -46,8 +48,10 @@ public class UpdateRandomLenHandler implements EventHandler<ActionEvent> {
         gridPane.add(strField, 1, 0);
         gridPane.add(intName, 0, 1);
         gridPane.add(intField, 1, 1);
+        gridPane.add(saveTips1, 0, 3);
+        gridPane.add(saveTips2, 1, 3);
 
-        gridPane.add(btnHBox, 1, 3);
+        gridPane.add(btnHBox, 1, 4);
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(20d);
         gridPane.setVgap(10d);
