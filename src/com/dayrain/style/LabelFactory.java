@@ -7,7 +7,7 @@ public class LabelFactory {
 
     public static Label getLabel(String text) {
         Label label = new Label(text);
-        label.setFont(Font.font("Microsoft YaHei", 18));
+        label.setFont(Font.font("Microsoft YaHei", 15));
         return label;
     }
 }

@@ -16,7 +16,7 @@ public class ButtonFactory {
         BackgroundFill bgf = new BackgroundFill(Paint.valueOf("#145b7d"), new CornerRadii(10), new Insets(5));
         Button button = new Button();
         button.setText(text);
-        button.setPrefWidth(100);
+        button.setPrefWidth(80);
         button.setPrefHeight(50);
         button.setFont(Font.font("Microsoft YaHei", 15));
         button.setTextFill(Color.WHITE);

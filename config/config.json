@@ -5,26 +5,36 @@
   "stringLen" : 8,
   "intLen" : 8,
   "serverConfigs" : [ {
-    "serverName" : "WMS",
-    "port" : 8080,
+    "serverName" : "天津众华WMS",
+    "port" : 8099,
     "serverUrls" : [ {
-      "urlName" : "登录",
-      "url" : "/login",
-      "serverName" : "WMS",
+      "urlName" : "入库任务完成上报",
+      "url" : "/wz/accept/report",
+      "serverName" : "天津众华WMS",
       "requestType" : "POST",
-      "responseBody" : "{\n\t\"code\": 200,\n\t\"msg\": \"success\"\n}",
+      "responseBody" : "{\n\t\"code\": 0,\n\t\"message\": \"success\"\n}",
       "headerMap" : null
     }, {
-      "urlName" : "派发任务",
-      "url" : "/patch",
-      "serverName" : "WMS",
+      "urlName" : "出库任务完成上报",
+      "url" : "/wz/order/report",
+      "serverName" : "天津众华WMS",
       "requestType" : "POST",
-      "responseBody" : "{\n\t\"taskNo\": \"$string$\"\n}",
+      "responseBody" : "{\n\t\"code\": 0,\n         \"message\":\"success\"\n}",
+      "headerMap" : null
+    }, {
+      "urlName" : "盘点结果同步",
+      "url" : "/wz/material/update",
+      "serverName" : "天津众华WMS",
+      "requestType" : "POST",
+      "responseBody" : "{\n\"code\": 0,\n\"message\": \"success\"\n}",
+      "headerMap" : null
+    }, {
+      "urlName" : "物资信息定时同步",
+      "url" : "/wz/material/infos",
+      "serverName" : "天津众华WMS",
+      "requestType" : "POST",
+      "responseBody" : "{\n\t\"code\": 0,\n\t\"message\": \"success\"\n}",
       "headerMap" : null
     } ]
-  }, {
-    "serverName" : "WCS",
-    "port" : 8081,
-    "serverUrls" : [ ]
   } ]
 }

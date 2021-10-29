@@ -174,12 +174,9 @@ public class HomePage {
         titledPane.setPrefWidth(600d);
         titledPane.setExpanded(false);
         titledPane.setBackground(getBackGround());
-        titledPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (!serverConfig.getServerName().equals(logArea.getServerName())) {
-                    ConsoleLog.resetTextArea(serverConfig.getServerName());
-                }
+        titledPane.setOnMouseClicked(event -> {
+            if (!serverConfig.getServerName().equals(logArea.getServerName())) {
+                ConsoleLog.resetTextArea(serverConfig.getServerName());
             }
         });
 
@@ -197,7 +194,7 @@ public class HomePage {
         serverListViews.setCellFactory(new Callback<ListView<ServerUrl>, ListCell<ServerUrl>>() {
             @Override
             public ListCell<ServerUrl> call(ListView<ServerUrl> param) {
-                ListCell<ServerUrl> listCell = new ListCell<ServerUrl>() {
+                return new ListCell<ServerUrl>() {
                     @Override
                     protected void updateItem(ServerUrl item, boolean empty) {
                         super.updateItem(item, empty);
@@ -210,7 +207,7 @@ public class HomePage {
 
                             HBox labelBox = new HBox();
                             Label nameLabel = LabelFactory.getLabel(item.getUrlName());
-                            nameLabel.setPrefWidth(100d);
+                            nameLabel.setPrefWidth(150d);
                             Label urlLabel = LabelFactory.getLabel(item.getUrl());
                             labelBox.getChildren().addAll(nameLabel, urlLabel);
                             labelBox.setAlignment(Pos.CENTER_LEFT);
@@ -218,9 +215,9 @@ public class HomePage {
                             HBox btnBox = new HBox();
                             Button configButton = ButtonFactory.getButton("配置");
                             Button deleteButton = ButtonFactory.getButton("删除");
-                            btnBox.setSpacing(15d);
+                            btnBox.setSpacing(10d);
                             btnBox.getChildren().addAll(configButton, deleteButton);
-                            HBox.setMargin(deleteButton, new Insets(0, 20, 0, 0));
+                            HBox.setMargin(deleteButton, new Insets(0, 5, 0, 0));
 
                             deleteButton.setOnAction(new DeleteUrlHandler(item, serverConfig, serverListViews, HomePage.this));
                             configButton.setOnAction(new UpdateUrlHandler(item, serverListViews, primaryStage));
@@ -232,7 +229,6 @@ public class HomePage {
                         }
                     }
                 };
-                return listCell;
             }
         });
 
