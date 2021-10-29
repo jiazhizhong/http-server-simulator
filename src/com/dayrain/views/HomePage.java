@@ -1,7 +1,5 @@
 package com.dayrain.views;
 
-import com.dayrain.handle.UpdateRandomLenHandler;
-import com.dayrain.style.ButtonFactory;
 import com.dayrain.component.ConfigHolder;
 import com.dayrain.component.Configuration;
 import com.dayrain.component.ConsoleLog;
@@ -15,11 +13,12 @@ import com.dayrain.handle.DeleteUrlHandler;
 import com.dayrain.handle.ExportConfigHandler;
 import com.dayrain.handle.ImportConfigHandler;
 import com.dayrain.handle.StartServerHandler;
+import com.dayrain.handle.UpdateRandomLenHandler;
 import com.dayrain.handle.UpdateServerConfigHandler;
 import com.dayrain.handle.UpdateUrlHandler;
 import com.dayrain.server.ServerThread;
+import com.dayrain.style.ButtonFactory;
 import com.dayrain.style.LabelFactory;
-import com.dayrain.utils.FileUtils;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -47,9 +46,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import javafx.util.Callback;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,8 +59,6 @@ public class HomePage {
     private Configuration configuration = ConfigHolder.init();
 
     private HashMap<String, ServerThread> threadMap = new HashMap<>();
-
-    private List<ListView<ServerUrl>> listViews = new ArrayList<>();
 
     private VBox serverContainer;
 
@@ -140,7 +135,7 @@ public class HomePage {
         editButton.setOnAction(new UpdateServerConfigHandler(serverConfig, primaryStage));
         deleteButton.setOnAction(new DeleteServerHandler(serverConfig, configuration, this));
         headBox.getChildren().addAll(openButton, editButton, deleteButton, addButton, statusCircle);
-        HBox.setMargin(statusCircle, new Insets(0,0,0,30));
+        HBox.setMargin(statusCircle, new Insets(0, 0, 0, 30));
         headBox.setSpacing(20d);
         headBox.setAlignment(Pos.CENTER);
         //添加url
@@ -159,7 +154,7 @@ public class HomePage {
         titledPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if(!serverConfig.getServerName().equals(logArea.getServerName())) {
+                if (!serverConfig.getServerName().equals(logArea.getServerName())) {
                     ConsoleLog.resetTextArea(serverConfig.getServerName());
                 }
             }
@@ -179,15 +174,15 @@ public class HomePage {
         serverListViews.setCellFactory(new Callback<ListView<ServerUrl>, ListCell<ServerUrl>>() {
             @Override
             public ListCell<ServerUrl> call(ListView<ServerUrl> param) {
-                ListCell<ServerUrl> listCell =new ListCell<ServerUrl>() {
+                ListCell<ServerUrl> listCell = new ListCell<ServerUrl>() {
                     @Override
                     protected void updateItem(ServerUrl item, boolean empty) {
                         super.updateItem(item, empty);
 
-                        if(empty || item == null) {
+                        if (empty || item == null) {
                             setText(null);
                             setGraphic(null);
-                        }else {
+                        } else {
                             BorderPane urlPane = new BorderPane();
 
                             HBox labelBox = new HBox();
@@ -202,7 +197,7 @@ public class HomePage {
                             Button deleteButton = ButtonFactory.getButton("删除");
                             btnBox.setSpacing(15d);
                             btnBox.getChildren().addAll(configButton, deleteButton);
-                            HBox.setMargin(deleteButton, new Insets(0, 20,0,0));
+                            HBox.setMargin(deleteButton, new Insets(0, 20, 0, 0));
 
                             deleteButton.setOnAction(new DeleteUrlHandler(item, serverConfig, serverListViews, HomePage.this));
                             configButton.setOnAction(new UpdateUrlHandler(item, serverListViews, primaryStage));
@@ -227,7 +222,7 @@ public class HomePage {
     public void refreshServerContainer() {
         serverContainer.getChildren().removeAll(serverContainer.getChildren());
         List<ServerConfig> serverConfigs = configuration.getServerConfigs();
-        if(serverConfigs == null || serverConfigs.size() == 0) {
+        if (serverConfigs == null || serverConfigs.size() == 0) {
             serverConfigs = new ArrayList<>();
             configuration.setServerConfigs(serverConfigs);
         }
@@ -258,7 +253,7 @@ public class HomePage {
 
     public Background getBackGround() {
         BackgroundFill backgroundFill = new BackgroundFill(Color.GRAY, new CornerRadii(1),
-                new Insets(0.0,0.0,0.0,0.0));
+                new Insets(0.0, 0.0, 0.0, 0.0));
         return new Background(backgroundFill);
     }
 }

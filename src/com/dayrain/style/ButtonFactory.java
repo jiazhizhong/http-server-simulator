@@ -18,7 +18,7 @@ public class ButtonFactory {
         button.setText(text);
         button.setPrefWidth(100);
         button.setPrefHeight(50);
-        button.setFont(Font.font("Microsoft YaHei",15));
+        button.setFont(Font.font("Microsoft YaHei", 15));
         button.setTextFill(Color.WHITE);
         button.setBackground(new Background(bgf));
         return button;

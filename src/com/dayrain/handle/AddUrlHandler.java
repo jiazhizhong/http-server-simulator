@@ -29,6 +29,7 @@ import java.util.List;
 
 /**
  * 添加路径
+ *
  * @author peng
  * @date 2021/10/27
  */
@@ -61,7 +62,7 @@ public class AddUrlHandler implements EventHandler<ActionEvent> {
         urlField.setPrefWidth(80);
 
         Label methodLabel = LabelFactory.getLabel("请求方式:");
-        ChoiceBox<String>choiceBox = new ChoiceBox<>();
+        ChoiceBox<String> choiceBox = new ChoiceBox<>();
         choiceBox.setItems(FXCollections.observableArrayList("POST", "GET"));
         choiceBox.setValue("POST");
         urlField.setPrefWidth(80);
@@ -103,7 +104,7 @@ public class AddUrlHandler implements EventHandler<ActionEvent> {
                 String name = nameField.getText();
                 List<ServerUrl> serverUrls = serverConfig.getServerUrls();
                 for (ServerUrl serverUrl : serverUrls) {
-                    if(serverUrl.getUrlName().equals(name)) {
+                    if (serverUrl.getUrlName().equals(name)) {
                         return;
                     }
                 }
@@ -114,7 +115,7 @@ public class AddUrlHandler implements EventHandler<ActionEvent> {
                 ServerUrl serverUrl = new ServerUrl(serverConfig.getServerName(), name, url, type.equals(RequestType.POST.name()) ? RequestType.POST : RequestType.GET, resp);
                 serverUrls.add(serverUrl);
                 ServerThread serverThread = threadMap.getOrDefault(serverConfig.getServerName(), null);
-                if(serverThread != null) {
+                if (serverThread != null) {
                     serverThread.addContext(serverUrl);
                 }
                 ListViewHelper.addAndRefresh(serverUrl, serverUrlListView);

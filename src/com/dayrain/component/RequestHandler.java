@@ -24,11 +24,11 @@ public class RequestHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         RequestType requestType = serverUrl.getRequestType();
         String param = null;
-        if(RequestType.GET.equals(requestType)) {
+        if (RequestType.GET.equals(requestType)) {
             param = handleGetRequest(exchange);
         }
 
-        if(RequestType.POST.equals(requestType)) {
+        if (RequestType.POST.equals(requestType)) {
             param = handlePostRequest(exchange);
         }
 
@@ -36,7 +36,7 @@ public class RequestHandler implements HttpHandler {
 
         ConsoleLog.log(serverUrl, param, resp);
         response(exchange, resp);
-     }
+    }
 
     private String handleGetRequest(HttpExchange exchange) {
         return exchange.getRequestURI().getQuery();
@@ -50,7 +50,7 @@ public class RequestHandler implements HttpHandler {
     private void response(HttpExchange exchange, String jsonBody) {
         try {
             exchange.sendResponseHeaders(200, jsonBody.length());
-            exchange.setAttribute("Content-Type","application/json; charset=utf-8");
+            exchange.setAttribute("Content-Type", "application/json; charset=utf-8");
             OutputStream outputStream = exchange.getResponseBody();
             outputStream.write(jsonBody.getBytes(StandardCharsets.UTF_8));
             outputStream.close();
@@ -61,7 +61,7 @@ public class RequestHandler implements HttpHandler {
 
     private String replaceResp(String resp) {
 
-        if(resp == null || "".equals(resp)) {
+        if (resp == null || "".equals(resp)) {
             return resp;
         }
 
@@ -82,14 +82,14 @@ public class RequestHandler implements HttpHandler {
 
     private String randomString(int len) {
         String res = UUID.randomUUID().toString();
-        if(len > res.length()) {
+        if (len > res.length()) {
             len = res.length();
         }
         return UUID.randomUUID().toString().substring(0, len);
     }
 
     private int randomInt(int len) {
-        int res = (int) Math.pow(10, len - 1 );
+        int res = (int) Math.pow(10, len - 1);
 
         return res + (int) (Math.pow(10, len - 1) * Math.random());
     }

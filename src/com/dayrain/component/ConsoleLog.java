@@ -18,11 +18,11 @@ public class ConsoleLog {
 
     public static void log(ServerUrl serverUrl, String params, String resp) {
         String log = logs.getOrDefault(serverUrl.getServerName(), null);
-        if(log == null || NO_REQUEST.equals(log)) {
+        if (log == null || NO_REQUEST.equals(log)) {
             log = "";
         }
 
-        if(params == null || "".equals(params)) {
+        if (params == null || "".equals(params)) {
             params = "空";
         }
         StringBuilder stringBuilder = new StringBuilder();
@@ -38,27 +38,18 @@ public class ConsoleLog {
         log += stringBuilder.toString();
         logs.put(serverUrl.getServerName(), log);
 
-        if(serverUrl.getServerName().equals(logArea.getServerName())) {
-            if(NO_REQUEST.equals(logArea.getText())) {
+        if (serverUrl.getServerName().equals(logArea.getServerName())) {
+            if (NO_REQUEST.equals(logArea.getText())) {
                 logArea.setText(log);
-            }else {
+            } else {
                 logArea.appendText(log);
             }
             logArea.setScrollTop(Double.MAX_VALUE);
         }
     }
 
-    public static String getLog(String serverName) {
-        if(logs.containsKey(serverName)) {
-            return logs.get(serverName);
-        }
-
-        logs.put(serverName, NO_REQUEST);
-        return NO_REQUEST;
-    }
-
     public static void resetTextArea(String serverName) {
-        if(!logs.containsKey(serverName)) {
+        if (!logs.containsKey(serverName)) {
             logs.put(serverName, NO_REQUEST);
         }
 

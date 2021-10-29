@@ -1,8 +1,6 @@
 package com.dayrain.utils;
 
-import com.dayrain.ApplicationStarter;
 import com.dayrain.component.Configuration;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;
@@ -10,22 +8,20 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 
-public class FileUtils{
+public class FileUtils {
 
-    public static void saveConfig(Configuration configuration){
+    public static void saveConfig(Configuration configuration) {
 
         saveConfig(configuration, getConfigFile());
     }
 
-    public static void saveConfig(Configuration configuration, File file){
+    public static void saveConfig(Configuration configuration, File file) {
 
         BufferedWriter bufferedWriter = null;
         try {
@@ -35,9 +31,9 @@ public class FileUtils{
             bufferedWriter.flush();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
-                if(bufferedWriter != null) {
+                if (bufferedWriter != null) {
                     bufferedWriter.close();
                 }
             } catch (IOException e) {
@@ -63,9 +59,9 @@ public class FileUtils{
             return "".equals(configStr.toString()) ? new Configuration(1200, 800, 8, 8) : new ObjectMapper().readValue(configStr.toString(), Configuration.class);
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
-                if(bufferedReader != null) {
+                if (bufferedReader != null) {
                     bufferedReader.close();
                 }
             } catch (IOException e) {
@@ -78,7 +74,7 @@ public class FileUtils{
 
     public static String getFromInputStream(InputStream inputStream) {
         try {
-            byte[]buf = new byte[4096];
+            byte[] buf = new byte[4096];
             int len = 0;
             StringBuilder stringBuilder = new StringBuilder();
             while ((len = inputStream.read(buf)) != -1) {
@@ -95,10 +91,10 @@ public class FileUtils{
     private static File getConfigFile() {
         String property = System.getProperty("user.dir");
         File file = new File(property + File.separator + "config" + File.separator + "config.json");
-        if(!file.exists()) {
+        if (!file.exists()) {
 
             File dir = new File(property + File.separator + "config");
-            if(!dir.exists()) {
+            if (!dir.exists()) {
                 dir.mkdirs();
             }
 

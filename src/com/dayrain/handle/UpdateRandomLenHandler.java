@@ -2,7 +2,6 @@ package com.dayrain.handle;
 
 import com.dayrain.component.ConfigHolder;
 import com.dayrain.component.Configuration;
-import com.dayrain.component.ServerConfig;
 import com.dayrain.style.ButtonFactory;
 import com.dayrain.style.LabelFactory;
 import javafx.event.ActionEvent;

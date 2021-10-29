@@ -14,12 +14,12 @@ public class ServerConfig {
     /**
      * 请求url集合
      */
-    private List<ServerUrl>serverUrls;
+    private List<ServerUrl> serverUrls;
 
     public ServerConfig() {
     }
 
-    public ServerConfig(String serverName, int port, List<ServerUrl>serverUrls) {
+    public ServerConfig(String serverName, int port, List<ServerUrl> serverUrls) {
         this.serverName = serverName;
         this.port = port;
         this.serverUrls = serverUrls;

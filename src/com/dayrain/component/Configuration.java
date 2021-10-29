@@ -14,7 +14,7 @@ public class Configuration {
 
     private int intLen;
 
-    private List<ServerConfig>serverConfigs;
+    private List<ServerConfig> serverConfigs;
 
     public Configuration() {
     }

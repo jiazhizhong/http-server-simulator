@@ -13,6 +13,7 @@ import java.io.File;
 
 /**
  * 导入配置文件
+ *
  * @author peng
  * @date 2021/10/28
  */
@@ -37,7 +38,7 @@ public class ImportConfigHandler implements EventHandler<ActionEvent> {
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("只能导入json文件", "*.json"));
         File file = fileChooser.showOpenDialog(stage);
 
-        if(file != null) {
+        if (file != null) {
             Configuration loadConfig = FileUtils.load(file);
             ConfigHolder.replace(loadConfig);
             FileUtils.saveConfig(loadConfig);

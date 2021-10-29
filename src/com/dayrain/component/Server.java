@@ -8,6 +8,7 @@ import java.util.concurrent.Executors;
 
 /**
  * 服务
+ *
  * @author peng
  * @date 2021/10/25
  */
@@ -31,14 +32,14 @@ public class Server implements Runnable {
                 addContext(serverUrl);
             }
             httpServer.start();
-            System.out.println("【" +serverConfig.getServerName() + "】服务已开启...");
+            System.out.println("【" + serverConfig.getServerName() + "】服务已开启...");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void stop() {
-        if(httpServer != null) {
+        if (httpServer != null) {
             System.out.println("【" + serverConfig.getServerName() + "】服务已关闭...");
             httpServer.stop(0);
         }

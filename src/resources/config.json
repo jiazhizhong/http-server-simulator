@@ -1,21 +1,26 @@
 {
-  "projectName" : "HTTP SERVER 模拟器",
-  "width" : 1200,
-  "height" : 800,
-  "serverConfigs" : [ {
-    "serverName" : "WMS",
-    "port" : 8082,
-    "serverUrls" : [ {
-      "urlName" : "登录",
-      "url" : "/login",
-      "serverName" : "WMS",
-      "requestType" : "POST",
-      "responseBody" : "{\n\t\"success\": \"ok\"\n}",
-      "headerMap" : null
-    } ]
-  }, {
-    "serverName" : "WCS",
-    "port" : 8083,
-    "serverUrls" : [ ]
-  } ]
+  "projectName": "HTTP SERVER 模拟器",
+  "width": 1200,
+  "height": 800,
+  "serverConfigs": [
+    {
+      "serverName": "WMS",
+      "port": 8082,
+      "serverUrls": [
+        {
+          "urlName": "登录",
+          "url": "/login",
+          "serverName": "WMS",
+          "requestType": "POST",
+          "responseBody": "{\n\t\"success\": \"ok\"\n}",
+          "headerMap": null
+        }
+      ]
+    },
+    {
+      "serverName": "WCS",
+      "port": 8083,
+      "serverUrls": []
+    }
+  ]
 }
