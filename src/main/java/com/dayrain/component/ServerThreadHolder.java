@@ -52,13 +52,6 @@ public class ServerThreadHolder {
         serverThread.addContext(serverUrl);
     }
 
-    public synchronized static void restart(String serverName) {
-        if(contains(serverName)) {
-            ServerThread serverThread = threadMap.get(serverName);
-            serverThread.restartServer();
-        }
-    }
-
     public static void replaceUrl(String beforeName, String beforeUrl, ServerUrl serverUrl) {
         if(contains(beforeName)) {
             ServerThread serverThread = threadMap.get(beforeName);

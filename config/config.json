@@ -4,5 +4,69 @@
   "height" : 800,
   "stringLen" : 8,
   "intLen" : 8,
-  "serverConfigs" : null
+  "serverConfigs" : [ {
+    "serverName" : "天津众华-唯智WMS",
+    "port" : 8081,
+    "serverUrls" : [ {
+      "urlName" : "上报入库订单完成信息",
+      "url" : "/wz/accept/report",
+      "serverName" : "天津众华-唯智WMS",
+      "requestType" : "POST",
+      "responseBody" : "{\n\t\"status\": 1,\n\t\"statusMsg\": \"success\"\n}",
+      "hiddenLog" : false,
+      "headerMap" : null
+    }, {
+      "urlName" : "出库任务完成上报",
+      "url" : "/wz/order/report",
+      "serverName" : "天津众华-唯智WMS",
+      "requestType" : "POST",
+      "responseBody" : "{\n\t\"status\": 1,\n\t\"statusMsg\": \"success\"\n}",
+      "hiddenLog" : false,
+      "headerMap" : null
+    }, {
+      "urlName" : "上传盘点结果",
+      "url" : "/wz/invent/resp",
+      "serverName" : "天津众华-唯智WMS",
+      "requestType" : "POST",
+      "responseBody" : "{\n\t\"status\": 1,\n\t\"statusMsg\": \"success\"\n}",
+      "hiddenLog" : false,
+      "headerMap" : null
+    }, {
+      "urlName" : "库存同步",
+      "url" : "/wz/stock/sync",
+      "serverName" : "天津众华-唯智WMS",
+      "requestType" : "POST",
+      "responseBody" : "{\n\t\"status\": 1,\n\t\"statusMsg\": \"success\"\n}",
+      "hiddenLog" : false,
+      "headerMap" : null
+    } ]
+  }, {
+    "serverName" : "天津众华-AIOT",
+    "port" : 8000,
+    "serverUrls" : [ {
+      "urlName" : "查询状态",
+      "url" : "/aiot/task/info",
+      "serverName" : "天津众华-AIOT",
+      "requestType" : "POST",
+      "responseBody" : "{\n    \"msg\": \"ok\",\n    \"code\": 0,\n    \"status\": 3\n}",
+      "hiddenLog" : true,
+      "headerMap" : null
+    }, {
+      "urlName" : "派发任务",
+      "url" : "/aiot/task/add",
+      "serverName" : "天津众华-AIOT",
+      "requestType" : "POST",
+      "responseBody" : "{\n    \"msg\": \"ok\",\n    \"code\":  0,\n    \"data\": \"$int$\"\n}",
+      "hiddenLog" : false,
+      "headerMap" : null
+    }, {
+      "urlName" : "查询区域内设备状态",
+      "url" : "/tjzh/area/device/status",
+      "serverName" : "天津众华-AIOT",
+      "requestType" : "POST",
+      "responseBody" : "[\n    {\n        \"areaId\": 1,\n        \"valid\": true\n    },\n    {\n        \"areaId\": 2,\n        \"valid\": true\n    },\n    {\n        \"areaId\": 3,\n        \"valid\": true\n    },\n    {\n        \"areaId\": 4,\n        \"valid\": true\n    },\n    {\n        \"areaId\": 10,\n        \"valid\": true\n    },\n    {\n        \"areaId\": 11,\n        \"valid\": true\n    },\n    {\n        \"areaId\": 20,\n        \"valid\": true\n    },\n    {\n        \"areaId\": 21,\n        \"valid\": true\n    }\n]",
+      "hiddenLog" : false,
+      "headerMap" : null
+    } ]
+  } ]
 }

@@ -16,10 +16,6 @@ public class ServerThread extends Thread {
         server.stop();
     }
 
-    public void restartServer() {
-        server.restart();
-    }
-
     public void addContext(ServerUrl serverUrl) {
         server.addContext(serverUrl);
     }

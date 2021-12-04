@@ -113,26 +113,32 @@ public class ServerUrlPaneView extends BorderPane {
         choiceBox.setValue(serverUrl.getRequestType().name());
         HBox hBox3 = FormFactory.getLine(typeLabel, choiceBox, 120, 70, 500);
 
+        Label logLabel = LabelFactory.getLabel("日志记录:");
+        ChoiceBox<String> choiceBox2 = new ChoiceBox<>();
+        choiceBox2.setItems(FXCollections.observableArrayList("显示", "隐藏"));
+        choiceBox2.setValue(serverUrl.isHiddenLog() ? "隐藏" : "显示");
+        HBox hBox4 = FormFactory.getLine(logLabel, choiceBox2, 120, 70, 500);
+
         Label respLabel = LabelFactory.getLabel("返回结果:");
         TextArea textArea = new TextArea(serverUrl.getResponseBody());
-        HBox hBox4 = FormFactory.getLine(respLabel, textArea, 120, 300, 500);
+        HBox hBox5 = FormFactory.getLine(respLabel, textArea, 120, 300, 500);
 
         Button saveButton = ButtonFactory.getButton("保存");
-        HBox hBox5 = FormFactory.getButtonLine(saveButton, 120, 500);
+        HBox hBox6 = FormFactory.getButtonLine(saveButton, 120, 500);
 
-        vBox.getChildren().addAll(hBox1, hBox2, hBox3, hBox4, hBox5);
+        vBox.getChildren().addAll(hBox1, hBox2, hBox3, hBox4, hBox5, hBox6);
         vBox.setSpacing(20d);
         vBox.setAlignment(Pos.CENTER);
 
         Stage stage = StageFactory.getPopStage("更新接口信息", new Scene(vBox));
         stage.show();
 
-
         saveButton.setOnAction(event1 -> {
             String name = nameField.getText();
             String url = urlField.getText();
             String resp = textArea.getText();
             String type = choiceBox.getValue();
+            String hidLog = choiceBox2.getValue();
             if(url == null) {
                 return;
             }
@@ -144,6 +150,7 @@ public class ServerUrlPaneView extends BorderPane {
             serverUrl.setUrlName(name);
             serverUrl.setUrl(url);
             serverUrl.setResponseBody(resp);
+            serverUrl.setHiddenLog("隐藏".equals(hidLog));
             serverUrl.setRequestType(type.equals(RequestType.POST.name()) ? RequestType.POST : RequestType.GET);
             ListViewHelper.refresh(serverListViews);
             ConfigHolder.save();

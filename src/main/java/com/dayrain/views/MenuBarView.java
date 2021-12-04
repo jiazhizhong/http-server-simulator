@@ -1,5 +1,6 @@
 package com.dayrain.views;
 
+import com.dayrain.Version;
 import com.dayrain.component.ConfigHolder;
 import com.dayrain.component.Configuration;
 import com.dayrain.component.ServerConfig;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 菜单栏
@@ -119,11 +121,15 @@ public class MenuBarView extends MenuBar {
         Stage stage = new Stage();
         stage.initOwner(ViewHolder.getPrimaryStage());
         FileChooser fileChooser = new FileChooser();
-        String projectName = ConfigHolder.get().getProjectName();
-        if (projectName == null) {
-            projectName = "";
+        String projectName = Version.VERSION_NAME;
+        Configuration configuration = ConfigHolder.get();
+        List<ServerConfig> serverConfigs = configuration.getServerConfigs();
+        if(serverConfigs != null && serverConfigs.size()>1) {
+            String serverName = serverConfigs.get(0).getServerName();
+            if(serverName != null && !"".equals(serverName.trim())) {
+                projectName = serverName;
+            }
         }
-        projectName += "server";
         fileChooser.setTitle("导出配置");
         fileChooser.setInitialFileName(projectName + ".json");
         File file = fileChooser.showSaveDialog(stage);
@@ -184,7 +190,7 @@ public class MenuBarView extends MenuBar {
             String port = portField.getText();
             ServerConfig serverConfig = new ServerConfig(name, Integer.parseInt(port), new ArrayList<>());
             ConfigHolder.get().getServerConfigs().add(serverConfig);
-            ViewHolder.getServerContainer().refresh();
+            ViewHolder.getServerContainer().addServer(serverConfig);
             ConfigHolder.save();
             stage.close();
         });

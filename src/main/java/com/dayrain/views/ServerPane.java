@@ -1,7 +1,6 @@
 package com.dayrain.views;
 
 import com.dayrain.component.ConfigHolder;
-import com.dayrain.component.ConsoleLog;
 import com.dayrain.component.RequestType;
 import com.dayrain.component.Server;
 import com.dayrain.component.ServerConfig;
@@ -21,7 +20,6 @@ import com.dayrain.utils.ListViewHelper;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -40,7 +38,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.util.List;
@@ -99,8 +96,9 @@ public class ServerPane extends TitledPane {
         this.setExpanded(false);
         this.setBackground(BackGroundFactory.getBackGround());
         this.setOnMouseClicked(event -> {
-            if (!serverConfig.getServerName().equals(ViewHolder.getLogArea().getServerName())) {
-                ConsoleLog.resetTextArea(serverConfig.getServerName());
+            if (!serverConfig.getServerName().equals(ViewHolder.getLogArea().getCurrentServerName())) {
+                ViewHolder.setLogOwner(serverConfig.getServerName());
+                ViewHolder.refreshLog();
             }
         });
 
@@ -178,8 +176,12 @@ public class ServerPane extends TitledPane {
         alert.setHeaderText("是否确定删除该服务？");
         Button okButton = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
         okButton.setOnAction(event1 -> {
+            //从配置文件中移除
             ConfigHolder.get().getServerConfigs().remove(serverConfig);
-            ViewHolder.getServerContainer().refresh();
+            //从视图中移除
+            ViewHolder.getServerContainer().removeServer(serverConfig);
+            //如果当前线程未关闭，则关闭
+            ServerThreadHolder.remove(serverConfig.getServerName());
             ConfigHolder.save();
         });
         alert.show();
@@ -202,14 +204,20 @@ public class ServerPane extends TitledPane {
         choiceBox.setValue("POST");
         HBox hBox3 = FormFactory.getLine(typeLabel, choiceBox, 120, 70, 500);
 
+        Label logLabel = LabelFactory.getLabel("日志记录:");
+        ChoiceBox<String> choiceBox2 = new ChoiceBox<>();
+        choiceBox2.setItems(FXCollections.observableArrayList("显示", "隐藏"));
+        choiceBox2.setValue("显示");
+        HBox hBox4 = FormFactory.getLine(logLabel, choiceBox2, 120, 70, 500);
+
         Label respLabel = LabelFactory.getLabel("返回结果:");
         TextArea textArea = new TextArea();
-        HBox hBox4 = FormFactory.getLine(respLabel, textArea, 120, 300, 500);
+        HBox hBox5 = FormFactory.getLine(respLabel, textArea, 120, 300, 500);
 
         Button saveButton = ButtonFactory.getButton("保存");
-        HBox hBox5 = FormFactory.getButtonLine(saveButton, 120, 500);
+        HBox hBox6 = FormFactory.getButtonLine(saveButton, 120, 500);
 
-        vBox.getChildren().addAll(hBox1, hBox2, hBox3, hBox4, hBox5);
+        vBox.getChildren().addAll(hBox1, hBox2, hBox3, hBox4, hBox5, hBox6);
         vBox.setSpacing(20d);
         vBox.setAlignment(Pos.CENTER);
 
@@ -226,14 +234,19 @@ public class ServerPane extends TitledPane {
             }
             String url = urlField.getText();
             String resp = textArea.getText();
-
             String type = choiceBox.getValue();
+            String hidLog = choiceBox.getValue();
             ServerUrl serverUrl = new ServerUrl(serverConfig.getServerName(), name, url, type.equals(RequestType.POST.name()) ? RequestType.POST : RequestType.GET, resp);
+            serverUrl.setHiddenLog("隐藏".equals(hidLog));
             serverUrls.add(serverUrl);
             ServerThreadHolder.addUrl(serverUrl);
             ListViewHelper.addAndRefresh(serverUrl, serverUrlListView);
             ConfigHolder.save();
             stage.close();
         });
+    }
+
+    public ServerConfig getServerConfig() {
+        return serverConfig;
     }
 }

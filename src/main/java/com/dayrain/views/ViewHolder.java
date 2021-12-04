@@ -1,5 +1,6 @@
 package com.dayrain.views;
 
+import com.dayrain.component.ServerUrl;
 import javafx.stage.Stage;
 /**
  * 主要视图的句柄
@@ -28,7 +29,7 @@ public class ViewHolder {
         ViewHolder.logArea = logArea;
     }
 
-    public static LogArea getLogArea() {
+    public synchronized static LogArea getLogArea() {
         return logArea;
     }
 
@@ -46,5 +47,19 @@ public class ViewHolder {
 
     public static HomeView getHomeView() {
         return ViewHolder.homeView;
+    }
+
+    public static void log(ServerUrl serverUrl, String params, String resp) {
+        if(logArea != null) {
+            logArea.log(serverUrl, params, resp);
+        }
+    }
+
+    public static void refreshLog() {
+        logArea.refresh();
+    }
+
+    public static void setLogOwner(String serverName) {
+        logArea.setCurrentServerName(serverName);
     }
 }

@@ -1,5 +1,6 @@
 package com.dayrain.component;
 
+import java.util.ArrayList;
 import java.util.List;
 /**
  * 配置文件
@@ -8,7 +9,7 @@ import java.util.List;
  */
 public class Configuration {
 
-    private String projectName = "HTTP SERVER 模拟器 V1.4";
+    private String projectName;
 
     private int width;
 
@@ -39,6 +40,9 @@ public class Configuration {
     }
 
     public List<ServerConfig> getServerConfigs() {
+        if(serverConfigs == null) {
+            serverConfigs = new ArrayList<>();
+        }
         return serverConfigs;
     }
 

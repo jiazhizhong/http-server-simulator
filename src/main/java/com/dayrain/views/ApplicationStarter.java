@@ -23,7 +23,9 @@ public class ApplicationStarter extends Application {
         try {
             ConfigHolder.init();
             ViewHolder.setPrimaryStage(primaryStage);
-            new HomeView().start();
+            HomeView homeView = new HomeView();
+            ViewHolder.setHomePage(homeView);
+            homeView.start();
         }catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());

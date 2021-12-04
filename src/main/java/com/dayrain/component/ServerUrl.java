@@ -29,6 +29,10 @@ public class ServerUrl {
      */
     private String responseBody;
     /**
+     * 是否隐藏日志
+     */
+    private boolean hiddenLog;
+    /**
      * 请求头
      */
     private Map<String, String> headerMap;
@@ -90,5 +94,13 @@ public class ServerUrl {
 
     public void setServerName(String serverName) {
         this.serverName = serverName;
+    }
+
+    public boolean isHiddenLog() {
+        return hiddenLog;
+    }
+
+    public void setHiddenLog(boolean hiddenLog) {
+        this.hiddenLog = hiddenLog;
     }
 }

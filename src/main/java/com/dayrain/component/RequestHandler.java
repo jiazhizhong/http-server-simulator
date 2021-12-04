@@ -1,12 +1,15 @@
 package com.dayrain.component;
 
 import com.dayrain.utils.FileUtils;
+import com.dayrain.views.ViewHolder;
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.UUID;
 /**
  * 请求处理
@@ -39,7 +42,7 @@ public class RequestHandler implements HttpHandler {
 
         String resp = replaceResp(serverUrl.getResponseBody());
 
-        ConsoleLog.log(serverUrl, param, resp);
+        ViewHolder.log(serverUrl, param, resp);
         response(exchange, resp);
     }
 
@@ -55,8 +58,8 @@ public class RequestHandler implements HttpHandler {
     private void response(HttpExchange exchange, String jsonBody) {
         try {
             byte[] bytes = jsonBody.getBytes(StandardCharsets.UTF_8);
+            exchange.getResponseHeaders().add("Content-Type", "application/json; charset=utf-8");
             exchange.sendResponseHeaders(200, bytes.length);
-            exchange.setAttribute("Content-Type", "application/json; charset=utf-8");
             OutputStream outputStream = exchange.getResponseBody();
             outputStream.write(jsonBody.getBytes(StandardCharsets.UTF_8));
             outputStream.close();

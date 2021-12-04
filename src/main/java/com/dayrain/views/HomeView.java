@@ -1,13 +1,11 @@
 package com.dayrain.views;
 
+import com.dayrain.Version;
 import com.dayrain.component.ConfigHolder;
-import com.dayrain.component.ConsoleLog;
 import com.dayrain.component.ServerConfig;
 import com.dayrain.component.ServerThreadHolder;
 import com.dayrain.style.IconFactory;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.VBox;
@@ -37,9 +35,7 @@ public class HomeView {
         SplitPane splitPane = new SplitPane();
         //日志
         LogArea logArea = new LogArea();
-        ConsoleLog.initTextArea(logArea);
         ViewHolder.setLogArea(logArea);
-
         //server
         ServerContainer serverContainer = initServer();
         ViewHolder.setServerContainer(serverContainer);
@@ -47,7 +43,7 @@ public class HomeView {
         splitPane.setDividerPositions(0.55f, 0.45f);
         vBox.getChildren().addAll(menuBar, splitPane);
 
-        primaryStage.setTitle(ConfigHolder.get().getProjectName());
+        primaryStage.setTitle(Version.VERSION_NAME);
         primaryStage.setScene(new Scene(vBox));
         primaryStage.setWidth(ConfigHolder.get().getWidth());
         primaryStage.setHeight(ConfigHolder.get().getHeight());
@@ -58,6 +54,7 @@ public class HomeView {
             ConfigHolder.save();
             ServerThreadHolder.stopAll();
             Platform.exit();
+            System.exit(0);
         });
     }
 

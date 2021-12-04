@@ -1,5 +1,6 @@
 package com.dayrain.views;
 
+import com.dayrain.component.ServerConfig;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public class ServerContainer extends VBox {
 
-    private List<ServerPane> serverPanes;
+    private final List<ServerPane> serverPanes;
 
     public ServerContainer(List<ServerPane> serverPanes) {
         this.serverPanes = serverPanes;
@@ -22,7 +23,20 @@ public class ServerContainer extends VBox {
     }
 
     public void refresh() {
-        getChildren().removeAll();
+        getChildren().clear();
         getChildren().addAll(serverPanes);
+    }
+
+    public synchronized void addServer(ServerConfig serverConfig) {
+        serverPanes.add(new ServerPane(serverConfig));
+        refresh();
+    }
+
+    public synchronized void removeServer(ServerConfig serverConfig) {
+        if(serverConfig == null) {
+            return;
+        }
+        serverPanes.removeIf(serverPane -> serverConfig.getServerName().equals(serverPane.getServerConfig().getServerName()));
+        refresh();
     }
 }
